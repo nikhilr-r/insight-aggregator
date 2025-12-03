@@ -1,0 +1,155 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- 1. DEFAULT THEME (Light Mode) --- */
+:root {
+  --primary: #2563eb;       /* Rich Blue */
+  --primary-hover: #1d4ed8;
+  
+  --bg-color: #f8fafc;      /* Light Gray Background */
+  --card-bg: #ffffff;       /* White Cards */
+  
+  --text-main: #1e293b;     /* Dark Slate Text */
+  --text-secondary: #64748b; /* Gray Text */
+  
+  --border-color: #e2e8f0;  /* Light Borders */
+  
+  --danger: #ef4444;
+  --success: #22c55e;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  
+  /* Input Backgrounds */
+  --input-bg: #f8fafc;
+}
+
+/* --- 2. DARK MODE OVERRIDES (System Sync) --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* We keep the primary blue, or adjust it slightly for contrast */
+    --primary: #3b82f6; 
+    --primary-hover: #60a5fa;
+
+    /* Flip the backgrounds to dark */
+    --bg-color: #0f172a;    /* Very Dark Blue/Slate */
+    --card-bg: #1e293b;     /* Darker Card */
+
+    /* Flip the text to light */
+    --text-main: #f1f5f9;   /* White-ish */
+    --text-secondary: #94a3b8; /* Light Gray */
+
+    /* Darken the borders */
+    --border-color: #334155;
+
+    /* Adjust shadows to be more subtle on dark backgrounds */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+
+    /* Inputs need to be dark too */
+    --input-bg: #0f172a;
+  }
+}
+
+/* --- 3. GLOBAL RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition when switching */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- 4. UTILITIES --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent; /* Changed from white to transparent for dark mode compatibility */
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background: var(--border-color); /* Subtle hover effect */
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+/* Inputs */
+input[type="text"], input[type="email"], input[type="password"], .auth-input {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--input-bg); /* Use the variable! */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-main); /* Ensure text is visible in dark mode */
+  transition: border-color 0.2s;
+}
+
+input:focus, .auth-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Card Overrides for Dark Mode Context */
+/* Ensure cards use the variables, not hardcoded white */
+.news-card, .auth-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+.card-title, .auth-title {
+  color: var(--text-main) !important;
+}
+
+.card-desc, .auth-subtitle, .card-date {
+  color: var(--text-secondary) !important;
+}
