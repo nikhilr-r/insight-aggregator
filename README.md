@@ -1,95 +1,101 @@
-📰 Insight News Aggregator
+# 📰 Insight — Personalized News Aggregator (MERN Stack)
 
-A personalized, distraction-free news briefing platform built with the MERN Stack.
+**Insight** is a distraction-free, personalized news briefing platform built using the **MERN Stack**.  
+Unlike traditional news portals filled with random headlines, Insight gives users full control by letting them curate feeds based on **Topics** (AI, Technology, Startups, etc.) and **Regions** (India, USA, UK, etc.).
 
-Insight is a smart news aggregator that filters out the noise. Unlike traditional news sites that bombard users with random headlines, Insight allows users to curate their own feed based on specific Interests (e.g., Technology, Startups, AI) and Regions (e.g., India, USA, UK).
+---
 
-🚀 Key Features
+## 🚀 Features
 
-🔐 Secure Authentication: Complete Sign Up & Login system using JWT (JSON Web Tokens) and Bcrypt password hashing.
+### 🔐 Secure Authentication
+- Sign Up & Login using **JWT Authentication**
+- Password hashing using **Bcrypt**
 
-🎨 Modern "Glass" UI: A professional, responsive interface featuring Glassmorphism, tailored for both Light and Dark modes (System Sync).
+### 🎨 Modern "Glass" UI  
+- Stunning **Glassmorphism-based interface**
+- Fully **Responsive**
+- **Light/Dark mode** with OS-level sync
 
-🌍 Smart Filtering: Users can filter news by Country (India, USA, UK, etc.) and specific Topics simultaneously.
+### 🌍 Smart Filtering  
+- Filter news by **Country** + **Topics** in combination  
+- Fetches only the **latest 3 days** of news
 
-🧠 Persistent Preferences: User settings are saved in MongoDB, ensuring the feed is ready the moment they log back in.
+### 🧠 Persistent User Preferences  
+- User topics and region preferences stored in **MongoDB**
+- Auto-loaded feed upon login
 
-⚡ Real-Time Data: Fetches the latest stories via the NewsAPI, sorted by freshness (Last 3 days).
+### ⚡ Real-Time News Fetching  
+- Uses **NewsAPI**
+- Sorted by *freshness* (newest first)
 
-📱 Responsive Design: Fully optimized for Desktop, Tablet, and Mobile.
+### 📱 Responsive Across All Devices  
+- Desktop, Tablet and Mobile optimized
 
-🛠️ Tech Stack
+---
 
-Frontend
+## 🛠️ Tech Stack
 
-React.js (Vite): For a blazing fast Single Page Application (SPA).
+### **Frontend**
+- React.js (Vite)
+- Context API (Global Auth State)
+- CSS3 Variables (Dynamic Theming)
+- Axios
 
-Context API: For global state management (User Auth).
+### **Backend**
+- Node.js + Express.js
+- MongoDB + Mongoose
+- JWT + Bcrypt
+- CORS, Dotenv
 
-CSS3 Variables: For dynamic theming (Dark/Light mode).
+---
 
-Axios: For efficient API communication.
-
-Backend
-
-Node.js & Express: Robust RESTful API architecture.
-
-MongoDB & Mongoose: NoSQL database for flexible user profiles.
-
-JWT & Bcrypt: Industry-standard security.
-
-Cors & Dotenv: Security and environment management.
-
-⚙️ Installation & Setup Guide
+## ⚙️ Installation & Setup Guide
 
 Follow these steps to run the project locally.
 
-1. Clone the Repository
+**1. Clone the Repository**
 
-git clone [https://github.com/YOUR_USERNAME/insight-aggregator.git](https://github.com/YOUR_USERNAME/insight-aggregator.git)
-cd insight-aggregator
+```bash
+git clone https://github.com/nikhilr-r/insight-aggregator.git
+cd insight-aggregator 
+```
+**2. Backend Setup**
 
-
-2. Backend Setup
-
-Navigate to the server folder and install dependencies.
-
+Navigate to the backend folder:
+```bash 
 cd server
-npm install
-
-
-Create a .env file in the server/ folder and add your secrets:
-
+npm install 
+```
+Create a .env file inside server/:
+```bash
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_super_secret_key
 NEWS_API_KEY=your_newsapi_key
-
-
-Start the backend server:
-
+```
+Start backend:
+```bash
 npm run dev
+```
 
-
-3. Frontend Setup
-
-Open a new terminal, navigate to the client folder, and install dependencies.
-
+**3. Frontend Setup**
+Open a new terminal and run:
+```bash
 cd client
 npm install
-
-
-Create a .env file in the client/ folder:
-
+```
+Create .env inside client:
+```bash
 VITE_API_URL=http://localhost:5000
-
-
-Start the React application:
-
+```
+Start the frontend:
+```bash
 npm run dev
-
-
-Your app should now be running on http://localhost:5173! 🚀
+```
+### Your app will run on:
+```bash  
+http://localhost:5173 
+ ```
 
 🔗 API Endpoints
 
