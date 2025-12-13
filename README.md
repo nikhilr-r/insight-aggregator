@@ -7,7 +7,7 @@ Unlike traditional news portals filled with random headlines, Insight gives user
 
 ## 🚀 Features
 
-### 🔐 Secure Authentication
+### 0🔐 Secure Authentication
 - Sign Up & Login using **JWT Authentication**
 - Password hashing using **Bcrypt**
 

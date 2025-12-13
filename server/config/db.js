@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-
 const connectDB = async () => {
   try {
     // We try to connect using the secret URI from our .env file
