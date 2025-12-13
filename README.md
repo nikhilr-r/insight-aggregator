@@ -1,6 +1,6 @@
 # 📰 Insight — Personalized News Aggregator (MERN Stack)
-**Insight** is a distraction-free, personalized news briefing platform built using the **MERN Stack**.  
-Unlike traditional news portals filled with random headlines, Insight gives users full control by letting them curate feeds based on **Topics** (AI, Technology, Startups, etc.) and **Regions** (India, USA, UK, etc.).
+
+#### **Insight** is a distraction-free, personalized news briefing platform built using the **MERN Stack** .Unlike traditional news portals filled with random headlines, Insight gives users full control by letting them curate feeds based on **Topics** (AI, Technology, Startups, etc.) and **Regions** (India, USA, UK, etc.). ####
 ---
 ## 🚀 Features
 #### Secure Authentication
