@@ -1,21 +1,22 @@
 import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
-import './Auth.css'; // CRITICAL: Ensure this import exists!
+import './Auth.css';
 
 function RegisterPage() {
+  const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { register } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     setError('');
 
     const result = await register(username, email, password);
@@ -24,81 +25,76 @@ function RegisterPage() {
       navigate('/');
     } else {
       setError(result.message);
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        
-        <div className="auth-header">
-          <div className="auth-icon">🚀</div>
-          <h2 className="auth-title">Join Insight</h2>
+    <div className="auth-shell">
+      <div className="auth-panel">
+        <header className="auth-head">
+          <h1 className="auth-brand">Insight</h1>
+          <h2 className="auth-title">Create your account</h2>
           <p className="auth-subtitle">
-            Start your journey to a cleaner news experience.
+            Set up your personalized news workspace.
           </p>
-        </div>
+        </header>
 
-        {error && (
-          <div className="error-box">
-            <span>⚠️</span> {error}
-          </div>
-        )}
-        
-        <form onSubmit={handleSubmit}>
-          
-          <div className="form-group">
-            <label className="form-label">Full Name</label>
-            <input 
-              type="text" 
-              className="auth-input"
-              placeholder="What should we call you?" 
+        {error && <div className="auth-error">{error}</div>}
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="field">
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="Your name"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input 
-              type="email" 
-              className="auth-input"
-              placeholder="name@example.com" 
+          <div className="field">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input 
-              type="password" 
-              className="auth-input"
-              placeholder="Create a strong password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+          <div className="field password-field">
+            <label>Password</label>
+              <div className="password-wrapper">
+                   <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                  <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(p => !p)}
+                  >
+                  {showPassword ? 'Hide' : 'Show'}
+                  </button>
+                </div>
           </div>
 
-          <button 
-            type="submit" 
-            className="auth-btn"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating Account...' : 'Create Account'}
-          </button>
 
+          <button type="submit" disabled={loading}>
+            {loading ? 'Creating account…' : 'Create account'}
+          </button>
         </form>
 
-        <div className="auth-footer">
-          Already have an account? 
-          <Link to="/login" className="auth-link">Log in here</Link>
-        </div>
-
+        <footer className="auth-footer">
+          <span>Already have an account?</span>
+          <Link to="/login">Sign in</Link>
+        </footer>
       </div>
     </div>
   );

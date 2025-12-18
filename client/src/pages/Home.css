@@ -1,0 +1,268 @@
+/* =====================
+   THEME VARIABLES
+===================== */
+
+:root {
+  --bg: #0f1115;
+  --card: #161a20;
+  --border: #232833;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #22c55e;
+}
+
+[data-theme="light"] {
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: #16a34a;
+}
+
+/* =====================
+   GLOBAL
+===================== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+}
+
+/* subtle premium gradient */
+.page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    600px at 50% -10%,
+    rgba(34,197,94,0.08),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* =====================
+   HEADER
+===================== */
+
+.header {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.header-nav a {
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.header-nav a:hover {
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn.ghost:hover {
+  background: var(--card);
+}
+
+.btn.danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* =====================
+   THEME TOGGLE
+===================== */
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.theme-toggle:hover {
+  background: var(--card);
+}
+
+/* =====================
+   CONTENT
+===================== */
+
+.content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* =====================
+   HERO
+===================== */
+
+.hero {
+  text-align: center;
+  margin-top: 110px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: rgba(34,197,94,0.15);
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.hero h2 {
+  font-size: 3rem;
+  line-height: 1.15;
+  font-weight: 600;        /* NOT bold */
+  letter-spacing: -0.02em; /* subtle tightening */
+  margin-bottom: 16px;
+}
+.hero h2 .accent {
+  font-weight: 600;
+}
+
+
+.hero p {
+  max-width: 520px;
+  margin: auto;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* =====================
+   PANEL / CHIPS
+===================== */
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.panel-block {
+  margin-bottom: 24px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.chip.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+/* =====================
+   GRID
+===================== */
+
+.grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+/* =====================
+   LIGHT MODE POLISH
+===================== */
+
+[data-theme="light"] .page::before {
+  opacity: 0.4;
+}
+[data-theme="light"] .hero h2 {
+  color: #0f172a; /* slate-900 */
+}[data-theme="light"] .theme-toggle {
+  color: #111827; /* slate-900 */
+}
+
