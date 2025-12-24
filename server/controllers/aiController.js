@@ -53,9 +53,26 @@ const summarizeNews = async (req, res) => {
     }
   }
 
-  // If neither key available
-  console.error('No AI provider configured. Set GEMINI_API_KEY or OPENAI_API_KEY.');
-  return res.status(500).json({ message: 'No AI provider configured. Set GEMINI_API_KEY or OPENAI_API_KEY.' });
+  // If neither key available, provide a lightweight local fallback summarizer
+  console.warn('No AI provider configured. Using local fallback summarizer.');
+  try {
+    // Simple extractive fallback: take first 3 sentences from the content
+    const plain = text || title || contentToSummarize;
+    const sentences = plain
+      .replace(/\n+/g, ' ')
+      .split(/(?<=[.!?])\s+/)
+      .filter(Boolean);
+
+    const bullets = sentences.length > 0
+      ? sentences.slice(0, 3).map(s => s.trim())
+      : [title || 'No content available.'];
+
+    const summary = bullets.map(b => `- ${b}`).join('\n');
+    return res.status(200).json({ summary });
+  } catch (err) {
+    console.error('Local summarizer error:', err);
+    return res.status(500).json({ message: 'AI summarization failed' });
+  }
 };
 
 module.exports = { summarizeNews };
