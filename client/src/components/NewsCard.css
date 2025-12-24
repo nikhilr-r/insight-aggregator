@@ -1,6 +1,6 @@
 .news-card {
   background: white;
-  border-radius: 12px;
+  height: 140px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -15,8 +15,36 @@
   box-shadow: var(--shadow-lg);
 }
 
+
+.summarize-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.summarize-overlay button {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(14,165,233,0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.summarize-overlay button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
 .card-image-container {
-  position: relative;
+  padding: 14px;
   height: 200px;
   background-color: #cbd5e1;
 }
@@ -27,7 +55,7 @@
   object-fit: cover;
 }
 
-.placeholder-image {
+  font-size: 1rem;
   width: 100%;
   height: 100%;
   display: flex;
@@ -39,7 +67,7 @@
 
 .card-badge {
   position: absolute;
-  top: 10px;
+  font-size: 0.9rem;
   right: 10px;
   background: rgba(0, 0, 0, 0.7);
   color: white;
@@ -48,6 +76,11 @@
   font-size: 0.75rem;
   font-weight: 500;
   backdrop-filter: blur(4px);
+}
+.card-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .card-content {

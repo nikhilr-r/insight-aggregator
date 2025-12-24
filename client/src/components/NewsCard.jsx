@@ -56,12 +56,17 @@ function NewsCard({ article }) {
     <div className="news-card">
       {/* 1. HERO IMAGE SECTION */}
       <div className="card-image-container">
-        {article.urlToImage ? (
-          <img src={article.urlToImage} alt={article.title} />
-        ) : (
-          <div className="placeholder-image">Insight News</div>
-        )}
-        <div className="card-badge">{article.source.name}</div>
+          {article.urlToImage ? (
+            <img src={article.urlToImage} alt={article.title} />
+          ) : (
+            <div className="placeholder-image">Insight News</div>
+          )}
+          <div className="summarize-overlay">
+            <button onClick={handleSummarize} disabled={loadingAi} aria-label="Summarize article">
+              {loadingAi ? (<span className="spinner-small"></span>) : '✨ Summarize'}
+            </button>
+          </div>
+          <div className="card-badge">{article.source.name}</div>
       </div>
 
       {/* 2. CONTENT BODY */}
@@ -115,8 +120,7 @@ function NewsCard({ article }) {
         </div>
 
         {/* 4. ACTION FOOTER */}
-        <div style={{ display: 'flex', gap: '12px', marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
-          
+        <div className="card-footer" style={{ marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
           {/* Read Button */}
           <a 
             href={article.url} 
@@ -127,30 +131,6 @@ function NewsCard({ article }) {
           >
             Read Story
           </a>
-          
-          {/* AI Button - Styled to look distinctive but clean */}
-          <button 
-            onClick={handleSummarize} 
-            className="btn"
-            style={{ 
-              flex: 1,
-              background: loadingAi ? '#f8fafc' : 'white',
-              border: '1px solid #e2e8f0',
-              color: showSummary ? '#2563eb' : '#475569',
-              fontWeight: '600',
-              borderColor: showSummary ? '#2563eb' : '#e2e8f0',
-              transition: 'all 0.2s ease'
-            }}
-            disabled={loadingAi}
-          >
-            {loadingAi ? (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
-                <span className="spinner-small"></span> Thinking...
-              </span>
-            ) : (
-              showSummary ? 'Hide Summary' : '✨ Summarize'
-            )}
-          </button>
         </div>
       </div>
     </div>
