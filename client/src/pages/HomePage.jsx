@@ -16,6 +16,12 @@ function HomePage() {
   const [selectedPrefs, setSelectedPrefs] = useState(user?.preferences || []);
   const [selectedCountry, setSelectedCountry] = useState(user?.country || 'in');
 
+  // Keep local preference state in sync when user data changes (e.g., after login)
+  useEffect(() => {
+    setSelectedPrefs(user?.preferences || []);
+    setSelectedCountry(user?.country || 'in');
+  }, [user]);
+
   const availableTopics = [
     'Politics', 'Cricket', 'Technology', 'Startups',
     'Finance', 'Bollywood', 'Health', 'Science', 'AI', 'Travel'
@@ -120,7 +126,10 @@ const toggleTheme = () => {
       <Link to="/register" className="btn primary">Get Started</Link>
     </>
   ) : (
-    <button onClick={logout} className="btn danger">Logout</button>
+    <>
+      <button onClick={() => setShowPreferences(true)} className="btn ghost">Preferences</button>
+      <button onClick={logout} className="btn danger">Logout</button>
+    </>
   )}
 </div>
 

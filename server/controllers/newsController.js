@@ -2,11 +2,17 @@ const axios = require('axios');
 const User = require('../models/User');
 const { Redis } = require('@upstash/redis');
 
-// Initialize Redis (Always initialize, but we might not use it)
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
+// 1. DEFENSIVE INITIALIZATION
+// Only connect to Redis if the secrets exist in .env
+let redis;
+if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  });
+} else {
+  console.warn("⚠️ Redis credentials missing in .env. Caching will be DISABLED.");
+}
 
 const getNews = async (req, res) => {
   try {
@@ -14,8 +20,11 @@ const getNews = async (req, res) => {
     const preferences = user.preferences;
     const countryCode = user.country || 'in';
 
-    // Check the "Kill Switch"
-    const isRedisEnabled = process.env.ENABLE_REDIS === 'true';
+    // 2. CHECK CONFIGURATION
+    // Redis is enabled ONLY if the switch is 'true' AND we have a valid client
+    const isSwitchOn = process.env.ENABLE_REDIS === 'true';
+    const isRedisConfigured = !!redis; // true if redis client exists
+    const isRedisEnabled = isSwitchOn && isRedisConfigured;
 
     // Generate Cache Key
     const sortedPrefs = preferences.length > 0 ? preferences.sort().join(',') : 'top-headlines';
@@ -23,7 +32,7 @@ const getNews = async (req, res) => {
 
     // --- SMART LOGIC START ---
     
-    // 1. Only Check Redis if Enabled
+    // 3. Only Check Redis if Enabled & Configured
     if (isRedisEnabled) {
       try {
         const cachedData = await redis.get(cacheKey);
@@ -32,14 +41,14 @@ const getNews = async (req, res) => {
           return res.status(200).json(cachedData);
         }
       } catch (redisError) {
-        console.error("Redis Error (Ignoring):", redisError.message);
-        // If Redis fails, just continue to API (Fail Open)
+        console.error("Redis Read Error (Ignoring):", redisError.message);
       }
     } else {
-      console.log(`⚠️ CACHE DISABLED: Skipping Redis check for ${cacheKey}`);
+      if (!isSwitchOn) console.log(`⚠️ CACHE DISABLED: ENABLE_REDIS is set to false`);
+      else if (!isRedisConfigured) console.log(`⚠️ CACHE DISABLED: Redis credentials missing`);
     }
 
-    // 2. Fetch from API (The Usual Way)
+    // 4. Fetch from API (The Usual Way)
     console.log(`🐢 FETCHING: Calling NewsAPI...`);
     
     const countryMap = { 'in': 'India', 'us': 'USA', 'gb': 'UK', 'ca': 'Canada', 'au': 'Australia' };
@@ -61,10 +70,11 @@ const getNews = async (req, res) => {
     const response = await axios.get(url);
     const articles = response.data.articles;
 
-    // 3. Only Save to Redis if Enabled
+    // 5. Only Save to Redis if Enabled & Configured
     if (isRedisEnabled) {
-      // Don't await this! Let it happen in the background so user gets data faster.
-      redis.set(cacheKey, articles, { ex: 3600 }).catch(err => console.error("Redis Save Error:", err.message));
+      // Don't await this! Let it happen in the background.
+      redis.set(cacheKey, articles, { ex: 3600 })
+           .catch(err => console.error("Redis Save Error:", err.message));
     }
 
     res.status(200).json(articles);
