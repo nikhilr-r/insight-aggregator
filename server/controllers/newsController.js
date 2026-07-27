@@ -68,10 +68,18 @@ const getNews = async (req, res) => {
     }
 
     const response = await axios.get(url);
-    const articles = response.data.articles;
+    let articles = response.data.articles || [];
+
+    // Fallback if top-headlines returned 0 articles (common for non-US regions like 'in' on Developer accounts)
+    if (articles.length === 0 && preferences.length === 0) {
+      console.log(`⚠️ Empty articles from top-headlines for country: ${countryCode}. Falling back to everything query: ${countryName}`);
+      const fallbackUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(countryName)}&from=${fromDate}&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+      const fallbackResponse = await axios.get(fallbackUrl);
+      articles = fallbackResponse.data.articles || [];
+    }
 
     // 5. Only Save to Redis if Enabled & Configured
-    if (isRedisEnabled) {
+    if (isRedisEnabled && articles.length > 0) {
       // Don't await this! Let it happen in the background.
       redis.set(cacheKey, articles, { ex: 3600 })
            .catch(err => console.error("Redis Save Error:", err.message));

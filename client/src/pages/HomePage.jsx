@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import NewsCard from '../components/NewsCard';
+import NewsModal from '../components/NewsModal';
 import api from '../api';
 import './Home.css'; // CRITICAL: Ensure this import exists!
 
@@ -12,6 +13,7 @@ function HomePage() {
   const [loading, setLoading] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [visibleCount, setVisibleCount] = useState(9);
+  const [activeArticle, setActiveArticle] = useState(null);
 
   const [selectedPrefs, setSelectedPrefs] = useState(user?.preferences || []);
   const [selectedCountry, setSelectedCountry] = useState(user?.country || 'in');
@@ -61,17 +63,17 @@ function HomePage() {
     );
   };
   const [theme, setTheme] = useState(
-  localStorage.getItem('theme') || 'dark'
-);
+    localStorage.getItem('theme') || 'dark'
+  );
 
-useEffect(() => {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
-}, [theme]);
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
-const toggleTheme = () => {
-  setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-};
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
 
   const handleSavePreferences = async () => {
@@ -100,65 +102,61 @@ const toggleTheme = () => {
     <div className="page">
       {/* HEADER */}
       <header className="header">
-  <div className="header-left">
-    <span className="logo">🗞️</span>
-    <h1 className="brand-name">Insight</h1>
-  </div>
+        <div className="header-left">
+          <span className="logo">🗞️</span>
+          <h1 className="brand-name">Insight</h1>
+        </div>
 
-  <nav className="header-nav">
-    <a href="#features">Features</a>
-    <a href="#topics">Topics</a>
-    <a href="#how">How it works</a>
-  </nav>
+        <nav className="header-nav">
+          <a href="#features">Features</a>
+          <a href="#topics">Topics</a>
+          <a href="#how">How it works</a>
+        </nav>
 
-  <div className="header-actions">
-  <button
-    className="theme-toggle"
-    onClick={toggleTheme}
-    aria-label="Toggle theme"
-  >
-    {theme === 'dark' ? '🌙' : '☀️'}
-  </button>
+        <div className="header-actions">
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? '🌙' : '☀️'}
+          </button>
 
-  {!user ? (
-    <>
-      <Link to="/login" className="btn ghost">Login</Link>
-      <Link to="/register" className="btn primary">Get Started</Link>
-    </>
-  ) : (
-    <>
-      <button onClick={() => setShowPreferences(true)} className="btn ghost">Preferences</button>
-      <button onClick={logout} className="btn danger">Logout</button>
-    </>
-  )}
-</div>
+          {!user ? (
+            <>
+              <Link to="/login" className="btn ghost">Login</Link>
+              <Link to="/register" className="btn primary">Get Started</Link>
+            </>
+          ) : (
+            <>
+              <button onClick={() => setShowPreferences(true)} className="btn ghost">Preferences</button>
+              <button onClick={logout} className="btn danger">Logout</button>
+            </>
+          )}
+        </div>
 
-</header>
-
-
+      </header>
       {/* CONTENT */}
       <main className="content">
         {!user ? (
-         <section className="hero">
-  <span className="hero-badge">⚡ Smart News Aggregator</span>
+          <section className="hero">
+            <span className="hero-badge">⚡ Smart News Aggregator</span>
+            <h2>
+              Personalized News. <br />
+              <span className="accent">Zero Noise.</span>
+            </h2>
+            <p>
+              Follow topics you care about. Choose your region. <br />
+              Get only what matters — nothing else.
+            </p>
 
-  <h2>
-    Personalized News. <br />
-    <span className="accent">Zero Noise.</span>
-  </h2>
+            <div className="hero-actions">
+              <Link to="/register" className="btn primary">
+                Create Free Account
+              </Link>
 
-  <p>
-    Follow topics you care about. Choose your region. <br />
-    Get only what matters — nothing else.
-  </p>
-
-  <div className="hero-actions">
-    <Link to="/register" className="btn primary">
-      Create Free Account
-    </Link>
-   
-  </div>
-</section>
+            </div>
+          </section>
         ) : (
           <>
             {showPreferences && (
@@ -204,7 +202,7 @@ const toggleTheme = () => {
             ) : (
               <section className="grid">
                 {articles.slice(0, visibleCount).map((article, i) => (
-                  <NewsCard key={i} article={article} />
+                  <NewsCard key={i} article={article} onOpenDetails={setActiveArticle} />
                 ))}
               </section>
             )}
@@ -222,6 +220,9 @@ const toggleTheme = () => {
           </>
         )}
       </main>
+      {activeArticle && (
+        <NewsModal article={activeArticle} onClose={() => setActiveArticle(null)} />
+      )}
     </div>
   );
 }

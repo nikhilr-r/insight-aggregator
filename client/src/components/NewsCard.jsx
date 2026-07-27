@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './NewsCard.css'; // Assumes existing CSS styles
 import api from '../api';
 
-function NewsCard({ article }) {
+function NewsCard({ article, onOpenDetails }) {
   const [summary, setSummary] = useState(null);
   const [loadingAi, setLoadingAi] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
@@ -53,7 +53,7 @@ function NewsCard({ article }) {
   };
 
   return (
-    <div className="news-card">
+    <div className="news-card" onClick={() => onOpenDetails(article)}>
       {/* 1. HERO IMAGE SECTION */}
       <div className="card-image-container">
           {article.urlToImage ? (
@@ -120,17 +120,18 @@ function NewsCard({ article }) {
         </div>
 
         {/* 4. ACTION FOOTER */}
-        <div className="card-footer" style={{ marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+        <div className="card-footer" style={{ marginTop: 'auto', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
           {/* Read Button */}
-          <a 
-            href={article.url} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="btn btn-primary card-btn"
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenDetails(article);
+            }} 
+            className="btn primary card-btn"
             style={{ flex: 1 }}
           >
             Read Story
-          </a>
+          </button>
         </div>
       </div>
     </div>

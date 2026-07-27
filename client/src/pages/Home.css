@@ -1,23 +1,16 @@
 /* =====================
-   THEME VARIABLES
+   THEME VARIABLES MAPPING
+   Unifies with index.css
 ===================== */
 
 :root {
-  --bg: #0f1115;
-  --card: #161a20;
-  --border: #232833;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #22c55e;
-}
-
-[data-theme="light"] {
-  --bg: #f9fafb;
-  --card: #ffffff;
-  --border: #e5e7eb;
-  --text: #111827;
-  --muted: #6b7280;
-  --accent: #16a34a;
+  --bg: var(--bg-color);
+  --card: var(--card-bg);
+  --border: var(--border-color);
+  --text: var(--text-main);
+  --muted: var(--text-secondary);
+  --accent: var(--primary);
+  --accent-hover: var(--primary-hover);
 }
 
 /* =====================
@@ -25,71 +18,86 @@
 ===================== */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .page {
   min-height: 100vh;
   background: var(--bg);
   position: relative;
+  transition: background 0.3s ease;
 }
 
-/* subtle premium gradient */
+/* Premium radial backdrop glow */
 .page::before {
   content: "";
   position: fixed;
   inset: 0;
   background: radial-gradient(
-    600px at 50% -10%,
-    rgba(34,197,94,0.08),
+    800px at 50% -10%,
+    rgba(var(--primary-rgb), 0.06),
     transparent
   );
   pointer-events: none;
+  z-index: 0;
 }
 
 /* =====================
    HEADER
 ===================== */
-
 .header {
+  position: relative;
+  z-index: 10;
   max-width: 1200px;
-  margin: auto;
-  padding: 18px 24px;
+  margin: 0 auto;
+  padding: 20px 24px;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
+  border-bottom: 1px solid var(--border);
 }
 
 .header-left {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
+.logo {
+  font-size: 1.5rem;
+}
+
 .brand-name {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--text) 30%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header-nav {
   display: flex;
   justify-content: center;
-  gap: 32px;
+  gap: 36px;
 }
 
 .header-nav a {
   font-size: 0.95rem;
+  font-weight: 600;
   color: var(--muted);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .header-nav a:hover {
@@ -99,105 +107,138 @@ body {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 /* =====================
-   BUTTONS
+   BUTTONS (Pushed to Premium)
 ===================== */
-
 .btn {
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
 
 .btn.primary {
   background: var(--accent);
-  color: #000;
-  font-weight: 600;
+  color: white;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+}
+
+.btn.primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.35);
 }
 
 .btn.ghost {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text);
 }
 
 .btn.ghost:hover {
   background: var(--card);
+  border-color: var(--text);
+  color: var(--text);
 }
 
 .btn.danger {
-  background: #ef4444;
-  color: #fff;
+  background: var(--danger);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn.danger:hover {
+  background: var(--danger-hover);
+  transform: translateY(-1.5px);
 }
 
 /* =====================
    THEME TOGGLE
 ===================== */
-
 .theme-toggle {
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-size: 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 1.1rem;
   cursor: pointer;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .theme-toggle:hover {
   background: var(--card);
+  border-color: var(--text);
 }
 
 /* =====================
-   CONTENT
+   CONTENT AREA
 ===================== */
-
 .content {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
-  margin: auto;
-  padding: 24px;
+  margin: 0 auto;
+  padding: 32px 24px;
 }
 
 /* =====================
-   HERO
+   HERO SECTION
 ===================== */
-
 .hero {
   text-align: center;
-  margin-top: 110px;
+  margin: 90px auto 60px auto;
+  max-width: 800px;
+  animation: fadeIn 0.6s ease;
 }
 
 .hero-badge {
   display: inline-block;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 999px;
   font-size: 0.8rem;
-  background: rgba(34,197,94,0.15);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: rgba(var(--primary-rgb), 0.1);
   color: var(--accent);
-  margin-bottom: 16px;
-}
-.hero h2 {
-  font-size: 3rem;
-  line-height: 1.15;
-  font-weight: 600;        /* NOT bold */
-  letter-spacing: -0.02em; /* subtle tightening */
-  margin-bottom: 16px;
-}
-.hero h2 .accent {
-  font-weight: 600;
+  margin-bottom: 24px;
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
 }
 
+.hero h2 {
+  font-size: 3.5rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.hero h2 .accent {
+  background: linear-gradient(135deg, var(--accent) 30%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .hero p {
-  max-width: 520px;
-  margin: auto;
+  font-size: 1.1rem;
+  max-width: 580px;
+  margin: 0 auto 36px auto;
   color: var(--muted);
-  margin-bottom: 32px;
+  line-height: 1.6;
 }
 
 .hero-actions {
@@ -209,17 +250,27 @@ body {
 /* =====================
    PANEL / CHIPS
 ===================== */
-
 .panel {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 40px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 48px;
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.5s ease;
 }
 
 .panel-block {
   margin-bottom: 24px;
+}
+
+.panel-block h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 12px;
 }
 
 .chip-row {
@@ -229,40 +280,74 @@ body {
 }
 
 .chip {
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
   background: transparent;
   color: var(--text);
   cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chip:hover {
+  border-color: var(--text);
+  background: var(--bg);
 }
 
 .chip.active {
   background: var(--accent);
-  color: #000;
+  color: white;
   border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
 }
 
 /* =====================
-   GRID
+   GRID LAYOUT
 ===================== */
-
 .grid {
   display: grid;
-  gap: 30px;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+
+.status {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 60px 0;
+  font-weight: 500;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
 }
 
 /* =====================
-   LIGHT MODE POLISH
+   RESPONSIVE
 ===================== */
+@media (max-width: 768px) {
+  .header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    justify-items: center;
+    padding: 16px;
+  }
+  
+  .header-nav {
+    display: none; /* Hide full nav on mobile */
+  }
 
-[data-theme="light"] .page::before {
-  opacity: 0.4;
-}
-[data-theme="light"] .hero h2 {
-  color: #0f172a; /* slate-900 */
-}[data-theme="light"] .theme-toggle {
-  color: #111827; /* slate-900 */
-}
+  .hero h2 {
+    font-size: 2.5rem;
+  }
 
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
